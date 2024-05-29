@@ -74,10 +74,33 @@
             const rid = params.get('rid');
             const gid = params.get('gid');
             const apiUrl = `/api/bus-data?rid=${rid}&gid=${gid}`;
+            
             $.getJSON(apiUrl, data => {
-                //console.log(data);
-                plotWKT(data);                
-            });
+    // Отримання координат автобуса з отриманих даних
+    const busLatitude = data.latitude;
+    const busLongitude = data.longitude;
+
+    // Створення маркера з координатами автобуса
+    const busMarker = new ol.Feature({
+        geometry: new ol.geom.Point([busLongitude, busLatitude]), // Увага: у більшості API координати повинні бути в порядку [longitude, latitude]
+    });
+
+    // Додавання маркера на карту
+    const markerStyle = new ol.style.Style({
+        image: new ol.style.Icon({
+            src: 'https://openlayers.org/en/latest/examples/data/icon.png', // URL до зображення маркера
+            scale: 0.1, // Масштаб маркера
+        }),
+    });
+
+    busMarker.setStyle(markerStyle);
+    vector.getSource().addFeature(busMarker);
+
+    // Центрування карти на маркері автобуса
+    map.getView().setCenter([busLongitude, busLatitude]);
+    map.getView().setZoom(15); // Наприклад, встановлення зуму карти
+});
+
         }
 
         function plotWKT(data) {
