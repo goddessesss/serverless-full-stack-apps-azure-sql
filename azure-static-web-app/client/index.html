@@ -76,29 +76,30 @@
             const apiUrl = `/api/bus-data?rid=${rid}&gid=${gid}`;
             
             $.getJSON(apiUrl, data => {
-    // Отримання координат автобуса з отриманих даних
-    const busLatitude = data.latitude;
-    const busLongitude = data.longitude;
+   // Ручное указание координат автобуса
+const busLatitude = 48.8566; // Например, широта Парижа
+const busLongitude = 2.3522; // Например, долгота Парижа
 
-    // Створення маркера з координатами автобуса
-    const busMarker = new ol.Feature({
-        geometry: new ol.geom.Point([busLongitude, busLatitude]), // Увага: у більшості API координати повинні бути в порядку [longitude, latitude]
-    });
+// Создание маркера с ручными координатами автобуса
+const busMarker = new ol.Feature({
+    geometry: new ol.geom.Point([busLongitude, busLatitude]), // Учтите, что в большинстве API координаты указываются в порядке [долгота, широта]
+});
 
-    // Додавання маркера на карту
-    const markerStyle = new ol.style.Style({
-        image: new ol.style.Icon({
-            src: 'https://openlayers.org/en/latest/examples/data/icon.png', // URL до зображення маркера
-            scale: 0.1, // Масштаб маркера
-        }),
-    });
+// Добавление маркера на карту
+const markerStyle = new ol.style.Style({
+    image: new ol.style.Icon({
+        src: 'https://openlayers.org/en/latest/examples/data/icon.png', // URL до изображения маркера
+        scale: 0.1, // Масштаб маркера
+    }),
+});
 
-    busMarker.setStyle(markerStyle);
-    vector.getSource().addFeature(busMarker);
+busMarker.setStyle(markerStyle);
+vector.getSource().addFeature(busMarker);
 
-    // Центрування карти на маркері автобуса
-    map.getView().setCenter([busLongitude, busLatitude]);
-    map.getView().setZoom(15); // Наприклад, встановлення зуму карти
+// Центрирование карты на маркере автобуса
+map.getView().setCenter([busLongitude, busLatitude]);
+map.getView().setZoom(15); // Например, установка масштаба карты
+
 });
 
         }
